@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+var $ = require('cheerio')
+var _ = require('underscore')
+var requestWithCookie = require('./requestWithCookie')
+var stdinByLine =  require('./stdinByLine')
+
+var cookie = process.env.ELIXIRSIPS_COOKIE
+var elixirsipsBase = "https://elixirsips.dpdcart.com"
+var elixirsipsContentSite = elixirsipsBase + '/subscriber/content'
+
+stdinByLine.on('line', function(line){
+  var splittedLine = line.split(' ')
+  var url = splittedLine[0]
+  var episodeName = splittedLine[1]
+  parse(url, episodeName)
+})
+
+function parse(url, episodeName){
+  requestWithCookie(url, cookie, function(error, response, body){
+    var document = $.load(body)
+    var ulNodes = document('.blog-entry ul')
+    var attachmentsNode = ulNodes[ulNodes.length-1]
+    var linkNodes = $(attachmentsNode).find('a')
+    var links = _.map(linkNodes, function(linkNode){
+      linkNode = $(linkNode)
+      var url = linkNode.attr('href')
+      var fileName = linkNode.text()
+      return elixirsipsBase + url + ' ' + fileName + ' ' + episodeName
+    })
+    links.forEach(function(link){
+      console.log(link)
+    })
+  })
+}

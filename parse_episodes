@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+var $ = require('cheerio')
+var _ = require('underscore')
+var requestWithCookie = require('./requestWithCookie')
+
+var cookie = process.env.ELIXIRSIPS_COOKIE
+var elixirsipsBase = "https://elixirsips.dpdcart.com"
+var elixirsipsContentSite = elixirsipsBase + '/subscriber/content'
+
+requestWithCookie(elixirsipsContentSite, cookie, function(error, response, body){
+  handleUnauthorizedContent(body)
+  var episodes = parseEpisodes(body)
+  _.each(episodes, function(episode){
+    console.log( elixirsipsBase + episode.link + ' ' + episode.title )
+  })
+})
+
+
+function parseEpisodes(body){
+  var document = $.load(body)
+  var blogEntries = document('.blog-entry')
+  return _.map(blogEntries, function(entry){
+    var title = $(entry).find('h3').text()
+    var description = $(entry).find('.blog-content').text()
+    var link = $(entry).find('.content-post-meta a').attr('href')
+    title = title.replace(/ /g, '_')
+    return {
+      title: title,
+      description: description,
+      link: link,
+    }
+  })
+  .reverse()
+}
+
+
+function parseIsAuthorized(document){
+  return document('#auth').length >= 1
+}
+
+function handleUnauthorizedContent(body){
+  var document = $.load(body)
+  if( !parseIsAuthorized(document) ){
+    console.log( '-- it appears you\'re not logged in' )
+    console.log( '-- reponse', response )
+    console.log( '-- body', body )
+    process.exit(1)
+  }
+}

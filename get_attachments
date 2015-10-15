@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+var url = require('url')
+var exec = require('child_process').exec
+var _ = require('underscore')
+var stdinByLine =  require('./stdinByLine')
+var cookie = process.env.ELIXIRSIPS_COOKIE
+
+stdinByLine.on('line', function(line){
+  var splittedLine = line.split(' ')
+  var url = splittedLine[0]
+  var fileName = splittedLine[1]
+  var episodeName = splittedLine[2]
+  download(url, fileName, episodeName)
+})
+
+var download = function(fileUrl, fileName, episodeName) {
+  exec('mkdir '+episodeName)
+  var wget = 'wget --header="Cookie: '+ cookie +'" -O ' + episodeName+'/'+fileName + ' ' + fileUrl
+  var child = exec(wget,{maxBuffer: 1024 * 500 * 1000}, function(err, stdout, stderr) {
+    if (err){
+      throw err
+    }
+    console.log(fileName + ' downloaded to ' + episodeName)
+  })
+}
