@@ -8,6 +8,7 @@ var cookie = process.env.ELIXIRSIPS_COOKIE
 var elixirsipsBase = "https://elixirsips.dpdcart.com"
 var elixirsipsContentSite = elixirsipsBase + '/subscriber/content'
 
+
 requestWithCookie(elixirsipsContentSite, cookie, function(error, response, body){
   handleUnauthorizedContent(body)
   var episodes = parseEpisodes(body)
@@ -43,8 +44,6 @@ function handleUnauthorizedContent(body){
   var document = $.load(body)
   if( !parseIsAuthorized(document) ){
     console.log( '-- it appears you\'re not logged in' )
-    console.log( '-- reponse', response )
-    console.log( '-- body', body )
     process.exit(1)
   }
 }

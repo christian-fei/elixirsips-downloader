@@ -18,7 +18,12 @@ stdinByLine.on('line', function(line){
 
 function parse(url, episodeName){
   requestWithCookie(url, cookie, function(error, response, body){
-    var document = $.load(body)
+    var document
+    try { document = $.load(body) } catch(err){
+      console.log( '-- something really bad happened' );
+      console.log( '-- err', err )
+      process.exit(1)
+    }
     var ulNodes = document('.blog-entry ul')
     var attachmentsNode = ulNodes[ulNodes.length-1]
     var linkNodes = $(attachmentsNode).find('a')

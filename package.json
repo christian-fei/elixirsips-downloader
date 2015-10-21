@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "es_parse_episodes": "parse_episodes",
+    "es_parse_attachments": "parse_attachments",
+    "es_get_attachments": "get_attachments",
+    "elixirsips-downloader": "download"
+  },
   "dependencies": {
     "cheerio": "^0.19.0",
     "jquery": "^2.1.4",

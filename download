@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function usage {
+  echo "Usage:"
+  echo "         elixirsips-downloader FROM TO"
+}
+
+FROM=$1
+TO=$2
+
+if [[ -z "$FROM" || -z "$TO" ]]; then
+  usage
+  exit 1
+fi
+
+es_parse_episodes > episodes.txt
+P="p"
+SED_PARAMS="-n $FROM,$TO$P"
+sed $SED_PARAMS episodes.txt | es_parse_attachments | es_get_attachments
+

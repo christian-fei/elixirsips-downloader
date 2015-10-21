@@ -21,24 +21,10 @@ symfony=abcdefm7lfvgit9mb912illd66;
 3) Set the environmental variable "ELIXIRSIPS_COOKIE" to the value copied before
 
 
-
-# get episodes
-
-```
-parse_episodes > episodes.txt
-```
-
-
-# get single episode attachments
-
-Simply replace `1,1` of the `sed` command to the *range* of episodes you want to download.
+# download!
 
 ```
-sed -n 1,1p episodes.txt | parse_attachments | get_attachments
-```
+elixirsips-downloader $FROM $TO
 
-To download the episodes 1 to 10 you would execute:
-
-```
-sed -n 1,10p episodes.txt | parse_attachments | get_attachments
+# where $FROM and $TO is the range of episodes to download
 ```
