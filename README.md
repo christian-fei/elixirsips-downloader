@@ -1,5 +1,9 @@
 helper scripts to download [elixirsips.com](http://elixirsips.com/) videos.
 
+```
+npm i -g elixirsips-downloader
+```
+
 # Setup
 
 1) Purchase a subscription for a month on [elixirsips.com](http://elixirsips.com/)
