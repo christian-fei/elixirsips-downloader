@@ -9,10 +9,8 @@ var cookie = process.env.ELIXIRSIPS_COOKIE
 stdinByLine.on('line', function(line){
   var splittedLine = line.split(' ')
   var url = splittedLine[0]
-  var fileName = splittedLine[1]
-  fileName = fileName.replace('`','')
-  fileName = fileName.replace("'",'')
-  var episodeName = splittedLine[2]
+  var fileName = clean(splittedLine[1])
+  var episodeName = clean(splittedLine[2])
   download(url, fileName, episodeName)
 })
 
@@ -25,4 +23,8 @@ var download = function(fileUrl, fileName, episodeName) {
     }
     console.log(fileName + ' downloaded to ' + episodeName)
   })
+}
+
+function clean(x){
+  return x.replace('`','').replace("'",'').replace('"','')
 }
