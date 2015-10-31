@@ -11,6 +11,7 @@ stdinByLine.on('line', function(line){
   var url = splittedLine[0]
   var fileName = splittedLine[1]
   fileName = fileName.replace('`','')
+  fileName = fileName.replace("'",'')
   var episodeName = splittedLine[2]
   download(url, fileName, episodeName)
 })
